@@ -1,0 +1,19 @@
+const {new_note_ugo_runtime} = require('./new_note_ugo/new_note_ugo_runtime');
+const {new_note_walgreen_runtime} = require('./new_note_walgreen/new_note_walgreen_runtime');
+const {initBot} = require('../telegram/initBot');
+const express = require('express');
+const mysqlConnection = require('../mysql/init_db');
+
+
+const core_router = express.Router();
+const tgBot = initBot()
+
+core_router
+    .post('/telegram/new_note/ugo/', (req, res) => {
+        new_note_ugo_runtime(req.body, res, mysqlConnection, tgBot)
+    })
+    .post('/telegram/new_note/walgreen/', (req, res) => {
+        new_note_walgreen_runtime(req.body, res, mysqlConnection, tgBot)
+    })
+
+module.exports = core_router;
